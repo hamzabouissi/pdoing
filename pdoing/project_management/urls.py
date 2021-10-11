@@ -1,10 +1,8 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
-
 from pdoing.project_management.views import DeveloperTaskView, ProjectView, TaskView
 
 app_name = "project_management"
-
 router = DefaultRouter()
 router.register(r"projects", ProjectView, basename="project")
 router.register(r"tasks", TaskView, basename="task")

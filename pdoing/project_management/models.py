@@ -102,6 +102,9 @@ class DeveloperTask(BaseModel):
 
     objects = DeveloperTaskManagerTask()
 
+    class Meta:
+        unique_together = ['task', 'developer']
+
     def save(self, *args, **kwargs) -> None:
         self.full_clean()
         super(DeveloperTask, self).save(*args, **kwargs)

@@ -1,11 +1,9 @@
 from django.shortcuts import render
 from rest_framework import serializers, status, viewsets
-from rest_framework.decorators import action, permission_classes
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.decorators import action
 from rest_framework.response import Response
-
 from pdoing.core.Base import SerilizerNone
+from pdoing.project_management.filters import TaskFilter
 from pdoing.project_management.models import DeveloperTask, Project, Task
 from pdoing.project_management.permissions import (
     DeveloperTaskOwnerPermission,
@@ -23,7 +21,7 @@ from pdoing.project_management.serializers.Project import (
 )
 from pdoing.project_management.serializers.Task import (
     TaskCreateSerializer,
-    TaskListSerializer,
+    TaskListSerializer, TaskUpdateSerializer,
 )
 
 # Create your views here.
@@ -44,13 +42,15 @@ class ProjectView(viewsets.ModelViewSet):
 
 
 class TaskView(viewsets.ModelViewSet):
-    http_method_names = ("get", "post")
+    http_method_names = ("get", "post", "patch")
     queryset = Task.objects.all()
     serializers = {
         "list": TaskListSerializer,
         "create": TaskCreateSerializer,
+        "update": TaskUpdateSerializer
     }
     permission_classes = (IsInstructorPermission,)
+    filterset_class = TaskFilter
 
     def get_serializer_class(self):
         return self.serializers.get(self.action, SerilizerNone)
