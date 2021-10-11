@@ -1,12 +1,22 @@
+from datetime import datetime
+
 from rest_framework import serializers
 
-from pdoing.project_management.models import DeveloperTask, Project
+from pdoing.project_management.models import DeveloperTask, Project, Task
+
+
+class NestedDeveloperTaskSerialiazer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = ("id", "title", "duration")
 
 
 class DeveloperTaskListSerializer(serializers.ModelSerializer):
+    task = NestedDeveloperTaskSerialiazer()
+
     class Meta:
         model = DeveloperTask
-        fields = ("id", "developer", "task", "status", "submit", "created_at")
+        fields = ("id", "developer", "task", "status", "submit", "created_at", "end_date")
 
 
 class DeveloperTaskCreateSerializer(serializers.ModelSerializer):

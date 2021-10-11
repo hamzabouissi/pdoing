@@ -105,6 +105,10 @@ class DeveloperTask(BaseModel):
     class Meta:
         unique_together = ['task', 'developer']
 
+    @property
+    def end_date(self) -> datetime:
+        return self.task.duration + self.created_at
+
     def save(self, *args, **kwargs) -> None:
         self.full_clean()
         super(DeveloperTask, self).save(*args, **kwargs)
