@@ -3,7 +3,7 @@ from rest_framework import serializers, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from pdoing.core.Base import SerilizerNone
-from pdoing.project_management.filters import TaskFilter
+from pdoing.project_management.filters import TaskFilter, DeveloperTaskFilter
 from pdoing.project_management.models import DeveloperTask, Project, Task
 from pdoing.project_management.permissions import (
     DeveloperTaskOwnerPermission,
@@ -65,6 +65,7 @@ class DeveloperTaskView(viewsets.ModelViewSet):
         "retrieve": DeveloperTaskListSerializer,
         "submit": SubmitDeveloperTaskSerializer,
     }
+    filterset_class = DeveloperTaskFilter
 
     def get_serializer_class(self):
         return self.serializers.get(self.action, SerilizerNone)

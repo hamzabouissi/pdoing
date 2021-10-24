@@ -4,7 +4,7 @@ from django.db.models import QuerySet
 
 class ProjectManager(models.Manager):
     def get_queryset(self) -> QuerySet:
-        return super().get_queryset().filter(public=True)
+        return super().get_queryset()
 
     def get_all(self) -> QuerySet:
         return super().get_queryset()

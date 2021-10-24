@@ -82,7 +82,7 @@ class DeveloperTask(BaseModel):
         on_delete=models.CASCADE,
         blank=False,
         related_name="tasks",
-        limit_choices_to={"user_type": UserTypeEnum.Instructor},
+        limit_choices_to={"user_type": UserTypeEnum.Developer},
     )
     assigned_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -122,8 +122,8 @@ class DeveloperTask(BaseModel):
 
     def submit_answer(self, submit: str) -> Result:
         # check previous tasks where successful
-        if self.objects.has_all_previous_tasks_solved(
-            self.developer_id, self.task.project_id
+        if DeveloperTask.objects.has_all_previous_tasks_solved(
+            self.developer_id, self.task.project_id,self.id
         ):
             self.submit = submit
             self.status = DeveloperTaskStatus.Submited
